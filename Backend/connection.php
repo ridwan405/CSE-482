@@ -3,7 +3,7 @@
 $dbHostName= "localhost";
 $dbUserName= "root";
 $dbPass= "";
-$dbDataBase= "foodproj"; /*"food project"?*/
+$dbDataBase= "food_db"; /*"food project"?*/
 
 
 $con= mysqli_connect($dbHostName, $dbUserName, $dbPass, $dbDataBase);
