@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>cart</title>
+
+        <!-- font awesome cdn link  -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        />
+
+        <!-- custom css file link  -->
+        <link rel="stylesheet" href="css/cart.css" />
+    </head>
+    <body>
+        <div class="heading">
+            <h3>shopping cart</h3>
+            <p><a href="#">home</a> <span> / cart</span></p>
+        </div>
+
+        <section class="products">
+            <h1 class="title">your cart</h1>
+
+            <div class="box-container">
+                <form action="" method="post" class="box">
+                    <input type="hidden" name="cart_id" value="" />
+                    <a href="#" class="fas fa-eye"></a>
+                    <button
+                        type="submit"
+                        class="fas fa-times"
+                        name="delete"
+                    ></button>
+
+                    <img src="images/home-img-1.png" alt="" />
+
+                    <div class="name"></div>
+                    <div class="flex">
+                        <div class="price">
+                            <span>$100</span>
+                        </div>
+                        <input
+                            type="number"
+                            name="qty"
+                            class="qty"
+                            min="1"
+                            max="99"
+                            value=""
+                            maxlength="2"
+                        />
+                        <button
+                            type="submit"
+                            class="fas fa-edit"
+                            name="update_qty"
+                        ></button>
+                    </div>
+                    <div class="sub-total">
+                        sub total :
+                        <span>$100</span>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Second item -->
+
+            <div class="box-container">
+                <form action="" method="post" class="box">
+                    <input type="hidden" name="cart_id" value="" />
+                    <a href="#" class="fas fa-eye"></a>
+                    <button
+                        type="submit"
+                        class="fas fa-times"
+                        name="delete"
+                    ></button>
+
+                    <img src="images/home-img-2.png" alt="" />
+
+                    <div class="name"></div>
+                    <div class="flex">
+                        <div class="price">
+                            <span>$100</span>
+                        </div>
+                        <input
+                            type="number"
+                            name="qty"
+                            class="qty"
+                            min="1"
+                            max="99"
+                            value=""
+                            maxlength="2"
+                        />
+                        <button
+                            type="submit"
+                            class="fas fa-edit"
+                            name="update_qty"
+                        ></button>
+                    </div>
+                    <div class="sub-total">
+                        sub total :
+                        <span>$100</span>
+                    </div>
+                </form>
+            </div>
+
+            <div class="cart-total">
+                <p>cart total : <span>$200</span></p>
+                <a href="checkout.php" class="btn">proceed to checkout</a>
+            </div>
+
+            <div class="more-btn">
+                <form action="" method="post">
+                    <button
+                        type="submit"
+                        class="delete-btn"
+                        name="delete_all"
+                        onclick=""
+                    >
+                        delete all
+                    </button>
+                </form>
+                <a href="#" class="btn">continue shopping</a>
+            </div>
+        </section>
+    </body>
+</html>
