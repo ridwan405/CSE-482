@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>checkout</title>
+
+        <!-- font awesome cdn link  -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        />
+
+        <!-- custom css file link  -->
+        <link rel="stylesheet" href="css/checkout.css" />
+    </head>
+    <body>
+        <div class="heading">
+            <h3>checkout</h3>
+            <p><a href="#">home</a> <span> / checkout</span></p>
+        </div>
+
+        <section class="checkout">
+            <h1 class="title">order summary</h1>
+
+            <form action="#" method="post">
+                <div class="cart-items">
+                    <h3>cart items</h3>
+
+                    <p>
+                        <span class="name">Pizza</span>
+                        <span class="price">$10</span>
+                    </p>
+
+                    <p>
+                        <span class="name">Pasta</span>
+                        <span class="price">$5</span>
+                    </p>
+
+                    <p>
+                        <span class="name">Chicken Fry</span>
+                        <span class="price">$5</span>
+                    </p>
+
+                    <p class="grand-total">
+                        <span class="name">grand total :</span
+                        ><span class="price">$20</span>
+                    </p>
+                    <a href="#" class="btn">veiw cart</a>
+                </div>
+
+                <div class="user-info">
+                    <h3>your info</h3>
+                    <p>
+                        <i class="fas fa-user"></i
+                        ><span>Md Musfiqur Rahman</span>
+                    </p>
+                    <p>
+                        <i class="fas fa-phone"></i><span>+8801987654321</span>
+                    </p>
+                    <p>
+                        <i class="fas fa-envelope"></i
+                        ><span>musfiqur.rahman1@northsouth.edu</span>
+                    </p>
+                    <a href="update_profile.php" class="btn">update info</a>
+                    <h3>delivery address</h3>
+                    <p>
+                        <i class="fas fa-map-marker-alt"></i
+                        ><span>Bashundhara, Dhaka-1229, Bangladesh</span>
+                    </p>
+
+                    <a href="#" class="btn">update address</a>
+
+                    <!-- payment method selection -->
+
+                    <select name="method" class="box" required>
+                        <option value="" disabled selected>
+                            select payment method --
+                        </option>
+                        <option value="cash on delivery">
+                            cash on delivery
+                        </option>
+                        <option value="credit card">credit card</option>
+                        <option value="bkash">bkash</option>
+                        <option value="nagad">nagad</option>
+                    </select>
+
+                    <input
+                        type="submit"
+                        value="place order"
+                        class="btn"
+                        style="
+                            width: 100%;
+                            background: var(--red);
+                            color: var(--white);
+                        "
+                        name="submit"
+                    />
+                </div>
+            </form>
+        </section>
+
+        <!-- footer section starts  -->
+        <!-- footer section ends -->
+    </body>
+</html>
