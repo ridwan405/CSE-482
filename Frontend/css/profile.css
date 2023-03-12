@@ -62,8 +62,7 @@
    color:var(--black);
 }
 
-.btn:hover,
-.delete-btn:hover{
+.btn:hover{
    letter-spacing: .2rem;
 }
 
