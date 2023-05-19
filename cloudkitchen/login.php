@@ -23,7 +23,7 @@ if(isset($_POST['submit'])){
 
    if($select_user->rowCount() > 0){
       $_SESSION['user_id'] = $row['id'];
-      header('location:home.php');
+      header('location:home.php?user_id='.$row['id']);
    }else{
       $message[] = 'incorrect username or password!';
    }
@@ -48,7 +48,27 @@ if(isset($_POST['submit'])){
 
 </head>
 <body>
-   
+
+<script>
+   $(document).ready(function() {
+      $('form').submit(function(event) {
+         event.preventDefault();
+         $.ajax({
+            url: 'login.php',
+            type: 'POST',
+            data: $('form').serialize(),
+            success: function(response) {
+               if(response == "success") {
+                  location.reload();
+               } else {
+                  alert(response);
+               }
+            }
+         });
+      });
+   });
+</script>
+
 <!-- header section starts  -->
 <?php include 'components/user_header.php'; ?>
 <!-- header section ends -->

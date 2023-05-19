@@ -17,6 +17,26 @@ include 'components/add_cart.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
+   
+<script>
+function showResult(str) {
+  if (str.length==0) {
+    document.getElementById("livesearch").innerHTML="";
+    document.getElementById("livesearch").style.border="0px";
+    return;
+  }
+  var xmlhttp=new XMLHttpRequest();
+  xmlhttp.onreadystatechange=function() {
+    if (this.readyState==4 && this.status==200) {
+      document.getElementById("livesearch").innerHTML=this.responseText;
+      document.getElementById("livesearch").style.border="1px solid #A5ACB2";
+    }
+  }
+  xmlhttp.open("GET","livesearch.php?q="+str,true);
+  xmlhttp.send();
+}
+</script>
+
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,7 +50,8 @@ include 'components/add_cart.php';
 
 </head>
 <body>
-   
+
+
 <!-- header section starts  -->
 <?php include 'components/user_header.php'; ?>
 <!-- header section ends -->
@@ -38,11 +59,15 @@ include 'components/add_cart.php';
 <!-- search form section starts  -->
 
 <section class="search-form">
-   <form method="post" action="">
-      <input type="text" name="search_box" placeholder="search here..." class="box">
+   <form method="get" action="">
+      <input type="text" name="search_box" placeholder="search here..." class="box" onkeyup="showResult(this.value)">
       <button type="submit" name="search_btn" class="fas fa-search"></button>
    </form>
+   <div id="livesearch"></div>
 </section>
+
+
+
 
 <!-- search form section ends -->
 

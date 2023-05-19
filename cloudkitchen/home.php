@@ -10,6 +10,11 @@ if(isset($_SESSION['user_id'])){
    $user_id = '';
 };
 
+if(isset($_GET['user_id'])){
+   $user_id = $_GET['user_id'];
+   setcookie('user_id', $user_id, time() + (86400 * 30), "/"); // set the cookie for 30 days
+}
+
 include 'components/add_cart.php';
 
 ?>
@@ -47,7 +52,7 @@ include 'components/add_cart.php';
             <div class="content">
                <span>order online</span>
                <h3>delicious pizza</h3>
-               <a href="menu.html" class="btn">see menus</a>
+               <a href="menu.php" class="btn">see menus</a>
             </div>
             <div class="image">
                <img src="images/home-img-1.png" alt="">
@@ -58,7 +63,7 @@ include 'components/add_cart.php';
             <div class="content">
                <span>order online</span>
                <h3>chezzy hamburger</h3>
-               <a href="menu.html" class="btn">see menus</a>
+               <a href="menu.php" class="btn">see menus</a>
             </div>
             <div class="image">
                <img src="images/home-img-2.png" alt="">
@@ -69,7 +74,7 @@ include 'components/add_cart.php';
             <div class="content">
                <span>order online</span>
                <h3>rosted chicken</h3>
-               <a href="menu.html" class="btn">see menus</a>
+               <a href="menu.php" class="btn">see menus</a>
             </div>
             <div class="image">
                <img src="images/home-img-3.png" alt="">
