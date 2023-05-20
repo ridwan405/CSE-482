@@ -1,8 +1,13 @@
 <?php
 
 include 'components/connect.php';
+include 'components/stripe_config.php';
+include 'stripe-php/init.php';
 
 session_start();
+
+
+
 
 if(isset($_SESSION['user_id'])){
    $user_id = $_SESSION['user_id'];
@@ -10,6 +15,14 @@ if(isset($_SESSION['user_id'])){
    $user_id = '';
    header('location:home.php');
 };
+
+if(!empty($_GET['session_id'])){
+   // $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
+   // $delete_cart->execute([$user_id]);
+   $message[] = 'order placed successfully!';
+
+}
+
 
 if(isset($_POST['submit'])){
 
@@ -29,25 +42,106 @@ if(isset($_POST['submit'])){
    $check_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
    $check_cart->execute([$user_id]);
 
+
+
    if($check_cart->rowCount() > 0){
 
-      if($address == ''){
-         $message[] = 'please add your address!';
-      }else{
-         
-         $insert_order = $conn->prepare("INSERT INTO `orders`(user_id, name, number, email, method, address, total_products, total_price) VALUES(?,?,?,?,?,?,?,?)");
-         $insert_order->execute([$user_id, $name, $number, $email, $method, $address, $total_products, $total_price]);
+      if($method== 'cash on delivery'){
 
-         $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
-         $delete_cart->execute([$user_id]);
+         if($address == ''){
+            $message[] = 'please add your address!';
+         }else{
+            
+            $insert_order = $conn->prepare("INSERT INTO `orders`(user_id, name, number, email, method, address, total_products, total_price) VALUES(?,?,?,?,?,?,?,?)");
+            $insert_order->execute([$user_id, $name, $number, $email, $method, $address, $total_products, $total_price]);
+   
+            $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
+            $delete_cart->execute([$user_id]);
+   
+            $message[] = 'order placed successfully!';
+         }
 
-         $message[] = 'order placed successfully!';
       }
+      else {
+
+         
+         
+         \Stripe\Stripe::setApiKey($stripeSecretKey);
+         header('Content-Type: application/json');
+         $currency= 'usd';
+
+         $select_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
+         $select_cart->execute([$user_id]);
+         if($select_cart->rowCount() > 0){
+         while($fetch_cart = $select_cart->fetch(PDO::FETCH_ASSOC)){
+
+         $stripeAmount = round($fetch_cart['price']*100, 2);
+
+         $line_items_array[] = array(
+
+            'price_data' => [ 
+            'product_data' => [ 
+               'name' => $fetch_cart['name'], 
+               'metadata' => [ 
+                  'pro_id' => $fetch_cart['pid'] 
+               ] 
+         ], 
+         'unit_amount' => $stripeAmount,  
+         'currency' => $currency,
+         ], 
+         'quantity' => $fetch_cart['quantity'] 
+     );
+  }
+}
+ try{
+$checkout_session = \Stripe\Checkout\Session::create([
+   'line_items' => [[ $line_items_array]], 
+   'mode' => 'payment',
+   'success_url' => STRIPE_SUCCESS_URL.'?session_id={CHECKOUT_SESSION_ID}', 
+   'cancel_url' => STRIPE_CANCEL_URL,
+ ]);
+
+ header("HTTP/1.1 303 See Other");
+ header("Location: " . $checkout_session->url);
+
+   }
+ catch(Exception $e) {  
+   $api_error = $e->getMessage();  
+} 
+
+if(empty($api_error) && $checkout_session){ 
+   $response = array( 
+       'status' => 1, 
+       'message' => 'Checkout Session created successfully!', 
+       'sessionId' => $checkout_session->id);
+       
+       $insert_order = $conn->prepare("INSERT INTO `orders`(user_id, name, number, email, method, address, total_products, total_price) VALUES(?,?,?,?,?,?,?,?)");
+               $insert_order->execute([$user_id, $name, $number, $email, $method, $address, $total_products, $total_price]);
       
-   }else{
-      $message[] = 'your cart is empty';
+               $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
+               $delete_cart->execute([$user_id]);
+      
+               $message[] = 'order placed successfully!';
+    
+}else{ 
+   $response = array( 
+       'status' => 0, 
+       'error' => array( 
+           'message' => 'Checkout Session creation failed! '.$api_error    
+       ) 
+   ); 
+}
+      
+
+      
+      
    }
 
+}
+
+else{
+   $message[] = 'your cart is empty';
+}
 }
 
 ?>
@@ -127,9 +221,9 @@ if(isset($_POST['submit'])){
       <select name="method" class="box" required>
          <option value="" disabled selected>select payment method --</option>
          <option value="cash on delivery">cash on delivery</option>
-         <option value="credit card">credit card</option>
-         <option value="paytm">paytm</option>
-         <option value="paypal">paypal</option>
+         <option value="online Payment">online</option>
+         <!-- <option value="paytm">paytm</option>
+         <option value="paypal">paypal</option> -->
       </select>
       <input type="submit" value="place order" class="btn <?php if($fetch_profile['address'] == ''){echo 'disabled';} ?>" style="width:100%; background:var(--red); color:var(--white);" name="submit">
    </div>
